@@ -1,0 +1,17 @@
+# This is a generated file. Not intended for manual editing.
+services:
+  locationaccess:
+    build:
+      context: "/Users/daniel/RiderProjects/LocationAccess"
+      dockerfile: "LocationAccess/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net7.0/LocationAccess.dll"
+    environment: {}
+    image: "locationaccess:dev"
+    ports: []
+    volumes:
+    - "/Users/daniel/RiderProjects/LocationAccess/LocationAccess:/app:rw"
+    working_dir: "/app"

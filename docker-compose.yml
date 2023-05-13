@@ -1,0 +1,6 @@
+﻿services:
+  locationaccess:
+    image: locationaccess
+    build:
+      context: .
+      dockerfile: LocationAccess/Dockerfile
