@@ -23,9 +23,12 @@ public class ExternalGrain: Grain, IExternalGrain {
     }
     
     public async Task<bool> CallDependency(long locationId, string specific) {
-        _logger.LogInformation("Calling External: {key}, location {id}, specific {specific}", _key, locationId, specific);
-        var result = await specific.GetAsync();
-        _logger.LogInformation("Called External: {key}, location {id}, specific {specific}", _key, locationId, specific);
-        return result.StatusCode == (int)HttpStatusCode.OK;
+        try {
+            var result = await specific.GetAsync();
+            return result.StatusCode == (int)HttpStatusCode.OK;
+        }
+        finally {
+            _logger.LogInformation("Called External: {key}, location {id}, specific {specific}", _key, locationId, specific);
+        }
     }
 }
