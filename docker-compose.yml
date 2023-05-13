@@ -1,4 +1,28 @@
 ﻿services:
+  external1:
+    image: externaldependencyapi
+    restart: always
+    build:
+      context: .
+      dockerfile: ExternalDependencyApi/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+  external2:
+    image: externaldependencyapi
+    restart: always
+    build:
+      context: .
+      dockerfile: ExternalDependencyApi/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+  external3:
+    image: externaldependencyapi
+    restart: always
+    build:
+      context: .
+      dockerfile: ExternalDependencyApi/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
   locationaccess:
     image: locationaccess
     restart: always
@@ -14,6 +38,9 @@
       - "443:443"
     depends_on:
       - cache
+      - external1
+      - external2
+      - external3
     volumes:
       - sqlite_files:/app/sqlite
   locationaccessscale:
@@ -28,7 +55,10 @@
       ORLEAN_UseRedis: true
       UseRedis: true
     depends_on:
-      - cache 
+      - cache
+      - external1
+      - external2
+      - external3
     volumes:
       - sqlite_files:/app/sqlite
   cache:

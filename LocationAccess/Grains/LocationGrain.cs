@@ -1,5 +1,7 @@
 using LocationAccess.Database;
 using LocationAccess.Models;
+using Flurl;
+using Flurl.Http;
 
 namespace LocationAccess.Grains; 
 
@@ -37,5 +39,16 @@ public class LocationGrain: Grain, ILocationGrain {
 
     public Task<string> GetName() {
         return Task.FromResult(_location?.Name ?? string.Empty);
+    }
+
+    public async Task<bool> CallExternal() {
+        if (_location == null) {
+            return false;
+        }
+
+        var host = new Uri(_location.External).Host;
+        var external = GrainFactory.GetGrain<IExternalGrain>(host);
+
+        return await external.CallDependency(_locationId, _location.External);
     }
 }

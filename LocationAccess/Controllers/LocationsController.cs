@@ -28,11 +28,30 @@ public class LocationsController : ControllerBase {
         }
         return Ok(name);
     }
+    [HttpGet("{id}/call")]
+    public async Task<IActionResult> CallById(long id) {
+        var locationGrain = _grainFactory.GetGrain<ILocationGrain>(id);
+        var success = await locationGrain.CallExternal();
+        if (!success) {
+            return base.BadRequest();
+        }
+        return Ok();
+    }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(long id) {
         var location = await _locationContext.Locations.FindAsync(id);
         return location == null ? NotFound() : Ok(location);
+    }
+    
+    
+    [HttpGet("/call")]
+    public async Task<IActionResult> CallAll() {
+        foreach (var location in _locationContext.Locations) {
+            var locationGrain = _grainFactory.GetGrain<ILocationGrain>(location.ID);
+            await locationGrain.CallExternal();
+        }
+        return Ok();
     }
 
     [HttpPost("")]

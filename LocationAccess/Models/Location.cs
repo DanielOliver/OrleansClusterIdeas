@@ -5,4 +5,5 @@ namespace LocationAccess.Models;
 public class Location {
     public long ID { get; set; }
     public string Name { get; set; }
+    public string External { get; set; }
 }
