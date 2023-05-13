@@ -1,6 +1,7 @@
 using System.Net;
 using LocationAccess.Database;
 using LocationAccess.Grains;
+using LocationAccess.Requests;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using NLog.Web;
@@ -9,7 +10,7 @@ using Orleans.Configuration;
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.AddEnvironmentVariables("ORLEAN_");
+builder.Configuration.AddEnvironmentVariables();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -17,6 +18,9 @@ builder.Services.AddSwaggerGen();
 // Sqlite is enough for testing purposes.
 builder.Services.AddDbContext<LocationContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddSingleton<IExternalGateway, ExternalGateway>();
+
 // Orleans in-memory and localhost testing
 builder.Services.AddOrleans(siloBuilder => {
     // How do I secure clusters?
@@ -49,8 +53,11 @@ builder.Host.UseNLog();
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope()) {
-    DbInitializer.Initialize( scope.ServiceProvider.GetRequiredService<LocationContext>());
+var createDb = builder.Configuration.GetValue<bool>("CreateDb", true);
+if (createDb) {
+    using (var scope = app.Services.CreateScope()) {
+        DbInitializer.Initialize(scope.ServiceProvider.GetRequiredService<LocationContext>());
+    }
 }
 
 // Configure the HTTP request pipeline.

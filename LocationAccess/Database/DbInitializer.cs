@@ -6,7 +6,11 @@ public static class DbInitializer {
     private static Dictionary<string, int> databaseRows = new Dictionary<string, int>() {
         { "http://external1:80/externalapi", 10 },
         { "http://external2:80/externalapi", 5 },
-        { "http://external3:80/externalapi", 3 }
+        { "http://external3:80/externalapi", 3 },
+        { "http://external1:80/externalapi/200", 3 },
+        { "http://external2:80/externalapi/200", 3 },
+        { "http://external2:80/externalapi/2000", 3 },
+        { "http://external3:80/externalapi/200", 3 }
     };
 
     public static void Initialize(LocationContext context) {

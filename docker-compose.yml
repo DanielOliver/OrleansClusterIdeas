@@ -31,7 +31,6 @@
       dockerfile: LocationAccess/Dockerfile
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      ORLEAN_UseRedis: true
       UseRedis: true
     ports:
       - "80:80"
@@ -52,8 +51,8 @@
       dockerfile: LocationAccess/Dockerfile
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      ORLEAN_UseRedis: true
       UseRedis: true
+      CreateDb: false
     depends_on:
       - cache
       - external1

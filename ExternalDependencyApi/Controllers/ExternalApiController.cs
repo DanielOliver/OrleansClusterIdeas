@@ -12,9 +12,15 @@ public class ExternalApiController : ControllerBase {
         _logger = logger;
     }
 
-    [HttpGet(Name = "")]
+    [HttpGet("")]
     public async Task<IActionResult> Get() {
         await Task.Delay(Random.Shared.Next(50, 3_000));
+        return Ok();
+    }
+    
+    [HttpGet("{maxDelay:int}")]
+    public async Task<IActionResult> Get(int maxDelay) {
+        await Task.Delay(Random.Shared.Next(10, Math.Max(60,Math.Min(15_000, maxDelay))));
         return Ok();
     }
 }
