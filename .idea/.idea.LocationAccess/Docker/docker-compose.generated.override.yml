@@ -1,6 +1,6 @@
 # This is a generated file. Not intended for manual editing.
 services:
-  locationaccess:
+  locationaccessscale:
     build:
       context: "/Users/daniel/RiderProjects/LocationAccess"
       dockerfile: "LocationAccess/Dockerfile"

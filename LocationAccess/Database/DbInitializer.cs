@@ -1,5 +1,7 @@
 namespace LocationAccess.Database; 
 
-public class DbInitializer {
-    
+public static class DbInitializer {
+    public static void Initialize(LocationContext context) {
+        context.Database.EnsureCreated();
+    }
 }
